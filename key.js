@@ -5,7 +5,7 @@ const { Telegraf } = require('telegraf');
 
 // Берём токен и URL из переменных окружения
 const BOT_API_TOKEN = process.env.BOT_API_TOKEN;
-const WEBAPP_URL = https://github.com/I666tima/Grooming_pushistiki.github.io/blob/m;
+const WEBAPP_URL = https://github.com/I666tima/Grooming_pushistiki.github.io/blob/main/index.html;
 
 // Проверка: если токен не найден
 if (!BOT_API_TOKEN) {
