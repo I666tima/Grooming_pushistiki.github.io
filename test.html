@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест: Груминг для собак</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background-color: #f2f2f2;
+            color: #000000;
+            padding: 16px;
+            padding-bottom: 100px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        .breed-gallery {
+            width: 100%;
+            height: 180px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            background-color: #ffffff;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .breed-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        .breed-image.active {
+            display: block;
+        }
+        .buttons-column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .button {
+            background-color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 16px;
+            color: #000000;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+        }
+        .button:hover {
+            background-color: #e8e8e8;
+            transform: translateY(-1px);
+        }
+        .button.active {
+            background-color: #2481cc;
+            color: #ffffff;
+            font-weight: 500;
+        }
+        .debug-info {
+            background-color: #ffebee;
+            border: 1px solid #ffcdd2;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #c62828;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐕 Тест: Выбор породы</h1>
+        
+        <div class="breed-gallery">
+            <div style="color: #888; font-size: 14px;">Выберите породу, чтобы увидеть фото</div>
+            <img src="https://images.unsplash.com/photo-1615751072497-5f5169febe17?w=500&auto=format&fit=crop" alt="Шпиц" class="breed-image" id="img-spitz">
+            <img src="https://images.unsplash.com/photo-1615497001839-b0a0eac3274c?w=500&auto=format&fit=crop" alt="Йорк" class="breed-image" id="img-york">
+            <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&auto=format&fit=crop" alt="Пудель" class="breed-image" id="img-poodle">
+        </div>
+        
+        <div class="buttons-column">
+            <button class="button breed-btn" data-breed="spitz">Шпиц</button>
+            <button class="button breed-btn" data-breed="york">Йорк</button>
+            <button class="button breed-btn" data-breed="poodle">Пудель</button>
+            <button class="button breed-btn" data-breed="maltese">Мальтезе</button>
+            <button class="button breed-btn" data-breed="maltipoo">Мальтипу</button>
+            <button class="button breed-btn" data-breed="bichon">Бишон</button>
+        </div>
+        
+        <div class="debug-info" id="debug-info">
+            <strong>Режим отладки:</strong> 
+            <div id="debug-message">Жду выбора породы...</div>
+        </div>
+    </div>
+
+    <script>
+        // Упрощенный код для тестирования без Telegram API
+        console.log("Страница загружена, начинаем тест...");
+        
+        let selectedBreed = null;
+        
+        // Показать фотографию породы
+        function showBreedImage(breedId) {
+            console.log("Пытаемся показать изображение для:", breedId);
+            
+            // Скрыть все изображения
+            document.querySelectorAll('.breed-image').forEach(img => {
+                img.classList.remove('active');
+            });
+            
+            // Показать выбранное изображение
+            const imgElement = document.getElementById(`img-${breedId}`);
+            if (imgElement) {
+                imgElement.classList.add('active');
+                console.log("Изображение найдено и показано");
+            } else {
+                console.log("Изображение не найдено для ID:", breedId);
+            }
+        }
+        
+        // Обработчик выбора породы
+        document.querySelectorAll('.breed-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                console.log("Кнопка нажата:", this.dataset.breed);
+                
+                // Сбросить активные кнопки
+                document.querySelectorAll('.breed-btn.active').forEach(b => {
+                    b.classList.remove('active');
+                });
+                
+                // Активировать выбранную кнопку
+                this.classList.add('active');
+                
+                // Сохранить выбор
+                selectedBreed = this.dataset.breed;
+                
+                // Показать изображение
+                showBreedImage(selectedBreed);
+                
+                // Показать отладочную информацию
+                document.getElementById('debug-message').innerHTML = 
+                    `Выбрана порода: <strong>${selectedBreed}</strong><br>
+                     Следующий шаг: показать меню для этой породы`;
+                
+                console.log("Порода выбрана:", selectedBreed);
+                
+                // Демо-переход к следующему шагу через 1 секунду
+                setTimeout(() => {
+                    document.getElementById('debug-message').innerHTML += 
+                        `<br><br><em>В реальном приложении здесь откроется меню выбора размера/типа</em>`;
+                }, 1000);
+            });
+        });
+        
+        // Проверка загрузки изображений
+        window.addEventListener('load', function() {
+            console.log("Страница полностью загружена");
+            document.getElementById('debug-message').innerHTML += 
+                "<br>Страница готова, можно выбирать породу!";
+        });
+    </script>
+</body>
+</html>
